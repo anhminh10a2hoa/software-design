@@ -1,13 +1,13 @@
-package fi.tuni.design_driven_devs;
+package fi.tuni.airpollution;
 
 import java.io.IOException;
 
 import javafx.fxml.FXML;
 
-public class SecondaryController {
+public class AirPollutionController {
 
     @FXML
     private void switchToPrimary() throws IOException {
-        App.setRoot("weather");
+        // App.setRoot("weather");
     }
 }
