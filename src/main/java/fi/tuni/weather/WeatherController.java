@@ -1,4 +1,4 @@
-package fi.tuni.design_driven_devs;
+package fi.tuni.weather;
 
 import java.net.URI;
 import javafx.fxml.FXML;
@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 import javafx.scene.control.TextField;
 import org.json.JSONObject;
 
-public class PrimaryController implements Initializable {
+public class WeatherController implements Initializable {
     @FXML
     private Label temperatureLabel;
     

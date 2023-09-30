@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #FFF2CC;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.design_driven_devs.PrimaryController">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #FFF2CC;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.weather.WeatherController">
     <children>
         <HBox alignment="CENTER" prefHeight="16.0" prefWidth="439.0">
            <children>
