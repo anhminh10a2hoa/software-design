@@ -1,22 +1,21 @@
 package fi.tuni.weather;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ResourceBundle;
+
+import org.json.JSONObject;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpClient;
-
-
-import javafx.event.ActionEvent;
-import java.util.ResourceBundle;
-import org.json.JSONObject;
 
 public class WeatherController implements Initializable {
     @FXML
@@ -119,12 +118,12 @@ public class WeatherController implements Initializable {
         
         this.model = new WeatherModel(temp, temp_max, temp_min, feels_like, humidity, pressure, weatherDescription);
 
-        view.setTemperature("Temperature: " + this.model.getTemperature() + "°C");
-        view.setMaxTemperature("Max temperature: " + this.model.getMaxTemperature() + "°C");
-        view.setMinTemperature("Min temperature: " + this.model.getMinTemperature() + "°C");
-        view.setFeelsLike("Feels like: " + this.model.getFeelsLike() + "°C");
-        view.setPressure("Pressure: " + this.model.getPressure());
-        view.setHumidity("Humidity: " + this.model.getHumidity() + "%");
+        view.setTemperatureLabel("Temperature: " + this.model.getTemperature() + "°C");
+        view.setMaxTemperatureLabel("Max temperature: " + this.model.getMaxTemperature() + "°C");
+        view.setMinTemperatureLabel("Min temperature: " + this.model.getMinTemperature() + "°C");
+        view.setFeelsLikeLabel("Feels like: " + this.model.getFeelsLike() + "°C");
+        view.setPressureLabel("Pressure: " + this.model.getPressure());
+        view.setHumidityLabel("Humidity: " + this.model.getHumidity() + "%");
 
         String iconCode = json.getJSONArray("weather").getJSONObject(0).getString("icon");
         String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
@@ -132,6 +131,6 @@ public class WeatherController implements Initializable {
         // You can use JavaFX Image and ImageView to load and display the image
         view.setWeatherImage(iconUrl);
         // You need to implement loading and displaying the image in your view.
-        view.setWeatherDescription(weatherDescription);
+        view.setWeatherDescriptionLabel(weatherDescription);
     }
 }

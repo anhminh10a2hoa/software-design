@@ -1,9 +1,9 @@
 package fi.tuni.weather;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextField;
 
 public class WeatherView {
     private Label temperatureLabel;
@@ -40,31 +40,31 @@ public class WeatherView {
     
 
     // Methods to update UI components
-    public void setTemperature(String temperature) {
+    public void setTemperatureLabel(String temperature) {
         temperatureLabel.setText(temperature);
     }
 
-    public void setMaxTemperature(String maxTemperature) {
+    public void setMaxTemperatureLabel(String maxTemperature) {
         maxTemperatureLabel.setText(maxTemperature);
     }
 
-    public void setMinTemperature(String minTemperature) {
+    public void setMinTemperatureLabel(String minTemperature) {
         minTemperatureLabel.setText(minTemperature);
     }
 
-    public void setFeelsLike(String feelsLike) {
+    public void setFeelsLikeLabel(String feelsLike) {
         feelsLikeLabel.setText(feelsLike);
     }
 
-    public void setPressure(String pressure) {
+    public void setPressureLabel(String pressure) {
         pressureLabel.setText(pressure);
     }
 
-    public void setHumidity(String humidity) {
+    public void setHumidityLabel(String humidity) {
         humidityLabel.setText(humidity);
     }
 
-    public void setWeatherDescription(String description) {
+    public void setWeatherDescriptionLabel(String description) {
         weatherDescriptionLabel.setText(description);
     }
 
