@@ -46,6 +46,7 @@ public class MainWindowController {
     private void loadFXML(String fxmlFileName) {
         try {
             contentArea.getChildren().clear();
+            System.out.println("Loading " + fxmlFileName);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxmlFileName));
             contentArea.getChildren().add(fxmlLoader.load());
         } catch (IOException e) {
