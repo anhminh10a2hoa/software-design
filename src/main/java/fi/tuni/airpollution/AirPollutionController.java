@@ -66,6 +66,7 @@ public class AirPollutionController implements Initializable {
         airPollutionComboBox.setItems(FXCollections.observableArrayList("CO", "NO", "NO2", "O3", "SO2", "PM2.5", "PM10", "NH3"));
         airPollutionLineChart.setAnimated(false);
         airPollutionLineChart.setVisible(false);
+        airPollutionComboBox.setValue("CO");
         airPollutionComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             airPollutionComboBox.setValue(newValue);
             airPollutionLineChart.getData().clear();
@@ -114,7 +115,6 @@ public class AirPollutionController implements Initializable {
                       airPollutionData.add(airPollutionModel);
                     }
                     airPollutionLineChart.setVisible(true);
-                    airPollutionComboBox.setValue("CO");
                     drawLineGraph();
                 } catch (IOException | InterruptedException e) {
                     errorLabel.setText("Can not fetch weather!");
