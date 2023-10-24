@@ -29,7 +29,7 @@
             <Label style="-fx-font-weight: bold;" text="Place:" />
             <TextField fx:id="placeInput" prefHeight="25.0" prefWidth="197.0" />
             <Label style="-fx-font-weight: bold;" text="Selection:" />
-            <ComboBox prefWidth="150.0" />
+            <ComboBox fx:id="forecastComboBox" prefWidth="150.0" />
          </children>
       </HBox>
       <HBox prefHeight="35.0" prefWidth="716.0">
@@ -40,10 +40,11 @@
             <TextField fx:id="longitudeInput" />
          </children>
       </HBox>
-      <Button fx:id="getWeatherButton" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
+      <Button fx:id="getWeatherButton" onAction="#getForecastData" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
+      <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
       <HBox prefHeight="383.0" prefWidth="257.0">
          <children>
-            <TabPane prefHeight="374.0" prefWidth="716.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="forecastTabPane" prefHeight="374.0" prefWidth="716.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Hourly">
                      <content>
@@ -75,7 +76,7 @@
                            </children></AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Weekly">
+                  <Tab text="16 days">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="381.0">
                            <children>
@@ -90,7 +91,7 @@
                            </children></AnchorPane>
                      </content>
                   </Tab>
-                <Tab text="Monthly">
+                <Tab text="365 days">
                      <content>
                         <AnchorPane prefHeight="354.0" prefWidth="367.0">
                            <children>
