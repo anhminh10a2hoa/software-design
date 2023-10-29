@@ -1,23 +1,3 @@
-/*
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-
-<AnchorPane prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.design_driven_devs.MainWindowController">
-   <StackPane fx:id="contentArea" layoutX="200.0" prefHeight="800.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-   <VBox prefHeight="800.0" prefWidth="200.0">
-      <children>
-         <RadioButton fx:id="weatherRadioButton" mnemonicParsing="false" text="Weather" />
-         <RadioButton fx:id="forecastRadioButton" mnemonicParsing="false" text="Forecast" />
-         <RadioButton fx:id="statisticRadioButton" mnemonicParsing="false" text="Statistic" />
-         <RadioButton fx:id="airPollutionRadioButton" mnemonicParsing="false" text="Air Pollution" />
-      </children>
-   </VBox>
-</AnchorPane>
- */
 package fi.tuni.design_driven_devs;
 
 import java.io.IOException;
@@ -34,8 +14,7 @@ public class MainWindowController {
     private RadioButton weatherRadioButton;
     @FXML
     private RadioButton forecastRadioButton;
-    @FXML
-    private RadioButton statisticRadioButton;
+
     @FXML
     private RadioButton airPollutionRadioButton;
     @FXML
@@ -58,14 +37,11 @@ public class MainWindowController {
     public void initialize() {
         // Create a ToggleGroup to group the radio buttons
         toggleGroup = new ToggleGroup();
-
         weatherRadioButton.setUserData("weatherRadioButton");
         forecastRadioButton.setUserData("forecastRadioButton");
-        statisticRadioButton.setUserData("statisticRadioButton");
         airPollutionRadioButton.setUserData("airPollutionRadioButton");
         weatherRadioButton.setToggleGroup(toggleGroup);
         forecastRadioButton.setToggleGroup(toggleGroup);
-        statisticRadioButton.setToggleGroup(toggleGroup);
         airPollutionRadioButton.setToggleGroup(toggleGroup);
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,8 +51,6 @@ public class MainWindowController {
                 value = "weather.fxml";
             } else if (value.equals("forecastRadioButton")) {
                 value = "forecast.fxml";
-            } else if (value.equals("statisticRadioButton")) {
-                value = "statistic.fxml";
             } else if (value.equals("airPollutionRadioButton")) {
                 value = "airpollution.fxml";
             }
