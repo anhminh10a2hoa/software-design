@@ -27,7 +27,7 @@
             <Label style="-fx-font-weight: bold;" text="Longitude:" />
             <TextField fx:id="longitudeInput" />
         </HBox>
-        <Button fx:id="getWeatherButton" onAction="#getWeatherData" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand;" text="Get weather" />
+        <Button fx:id="getWeatherButton" onAction="#getAirPollutionData" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand;" text="Get weather" />
         <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
       <ComboBox prefWidth="150.0" fx:id="airPollutionComboBox"/>
       <LineChart fx:id="airPollutionLineChart">

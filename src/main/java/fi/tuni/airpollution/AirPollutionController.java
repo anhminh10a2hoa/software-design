@@ -12,7 +12,6 @@ import java.net.URL;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -52,8 +51,9 @@ public class AirPollutionController implements Initializable {
     @FXML
     private ComboBox<String> airPollutionComboBox;
 
-    private List<AirPollutionModel> airPollutionData;
-    
+    private List<AirPollutionModel> airPollutionData = new ArrayList<AirPollutionModel>();
+    private AirPollutionModel model;
+    private AirPollutionView view;
     /**
      *
      * @param location
@@ -61,67 +61,70 @@ public class AirPollutionController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image weatherIconImage = new Image("https://cdn-icons-png.flaticon.com/512/8371/8371878.png");
-        titleImage.setImage(weatherIconImage);
-        airPollutionComboBox.setItems(FXCollections.observableArrayList("CO", "NO", "NO2", "O3", "SO2", "PM2.5", "PM10", "NH3"));
-        airPollutionLineChart.setAnimated(false);
-        airPollutionLineChart.setVisible(false);
-        airPollutionComboBox.setValue("CO");
-        airPollutionComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            airPollutionComboBox.setValue(newValue);
-            airPollutionLineChart.getData().clear();
+        this.view = new AirPollutionView(errorLabel, titleImage, latitudeInput, longitudeInput, airPollutionLineChart, xAxis, yAxis, airPollutionComboBox);
+        this.view.setTitleImage("https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-512.png");
+        this.view.setItemsAirPollutionComboBox(FXCollections.observableArrayList("CO", "NO", "NO2", "O3", "SO2", "PM2.5", "PM10", "NH3"));
+        this.view.setAnimatedAirPollutionLineChart(false);
+        this.view.setVisibleAirPollutionLineChart(false);
+        this.view.setValueAirPollutionComboBox("CO");
+        this.view.getAirPollutionComboBox().getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            this.view.setValueAirPollutionComboBox(newValue);
+            this.view.clearAirPollutionLineChart();
             drawLineGraph();
         }); 
     }
     
     @FXML 
-    protected void getWeatherData(ActionEvent event) {
-        String latitude = latitudeInput.getText();
-        String longitude = longitudeInput.getText();
+    protected void getAirPollutionData(ActionEvent event) {
+        String latitude = view.getLatitudeInput();
+        String longitude = view.getLongitudeInput();
         
         if (latitude.isEmpty() || longitude.isEmpty()) {
-            errorLabel.setVisible(true);
-            errorLabel.setText("Please provide latitude and longitude!");
+            view.setErrorLabel("Please provide latitude and longitude!");
         } else {
             try {
                 double latitudeValue = Double.parseDouble(latitude);
                 double longitudeValue = Double.parseDouble(longitude);
+                String apiKey = "cda257269cd8f052e74dc19afdd5252c"; // Replace with your OpenWeatherMap API key
+
                 HttpRequest request = HttpRequest.newBuilder()
                                     .uri(URI.create("http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" 
-                                            + latitudeValue + "&lon=" + longitudeValue + "&APPID=cda257269cd8f052e74dc19afdd5252c"))
+                                            + latitudeValue + "&lon=" + longitudeValue + "&APPID=" + apiKey))
                                     .method("GET", HttpRequest.BodyPublishers.noBody())
                                     .build();
                 try {
                     errorLabel.setVisible(false);
+                    airPollutionData.clear();
+                    this.view.clearAirPollutionLineChart();
+                    
                     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
                     String responseBody = response.body();
 
                     // Parse the JSON response
                     JSONObject json = new JSONObject(responseBody);
                     JSONArray listAirPollutionDataReturn = json.getJSONArray("list");
-                    airPollutionData = new ArrayList<AirPollutionModel>();
                     for (int i = 0; i < listAirPollutionDataReturn.length(); i++) {
-                      AirPollutionModel airPollutionModel = new AirPollutionModel();
                       JSONObject dataToJson = listAirPollutionDataReturn.getJSONObject(i);
-                      airPollutionModel.setCO(dataToJson.getJSONObject("components").getDouble("co"));
-                      airPollutionModel.setNO(dataToJson.getJSONObject("components").getDouble("no"));
-                      airPollutionModel.setNO2(dataToJson.getJSONObject("components").getDouble("no2"));
-                      airPollutionModel.setO3(dataToJson.getJSONObject("components").getDouble("o3"));
-                      airPollutionModel.setSO2(dataToJson.getJSONObject("components").getDouble("so2"));
-                      airPollutionModel.setPM25(dataToJson.getJSONObject("components").getDouble("pm2_5"));
-                      airPollutionModel.setPM10(dataToJson.getJSONObject("components").getDouble("pm10"));
-                      airPollutionModel.setNH3(dataToJson.getJSONObject("components").getDouble("nh3"));
-                      airPollutionModel.setDateTime(dataToJson.getInt("dt"));
-                      airPollutionData.add(airPollutionModel);
+                      double coValue = dataToJson.getJSONObject("components").getDouble("co");
+                      double noValue = dataToJson.getJSONObject("components").getDouble("no");
+                      double no2Value = dataToJson.getJSONObject("components").getDouble("no2");
+                      double o3Value = dataToJson.getJSONObject("components").getDouble("o3");
+                      double so2Value = dataToJson.getJSONObject("components").getDouble("so2");
+                      double pm25Value = dataToJson.getJSONObject("components").getDouble("pm2_5");
+                      double pm10Value = dataToJson.getJSONObject("components").getDouble("pm10");
+                      double nh3Value = dataToJson.getJSONObject("components").getDouble("nh3");
+                      int dateTime = dataToJson.getInt("dt");
+                      this.model = new AirPollutionModel(coValue, noValue, no2Value, o3Value, so2Value, pm25Value, pm10Value, nh3Value);
+                      this.model.setDateTime(dateTime);
+                      airPollutionData.add(this.model);
                     }
-                    airPollutionLineChart.setVisible(true);
+                    this.view.setVisibleAirPollutionLineChart(true);
                     drawLineGraph();
                 } catch (IOException | InterruptedException e) {
-                    errorLabel.setText("Can not fetch weather!");
+                    this.view.setErrorLabel("Can not fetch air pollution!");
                 }
             } catch (NumberFormatException e) {
-                errorLabel.setVisible(true);
-                errorLabel.setText("Latitude and longitude must be a number!");
+                this.view.setErrorLabel("Latitude and longitude must be a number!");
             }
         }
     }
@@ -129,8 +132,8 @@ public class AirPollutionController implements Initializable {
     @FXML 
     protected void drawLineGraph() {
         String selectedDataToShow = airPollutionComboBox.getValue();
-        yAxis.setLabel("μg/m3");
-        xAxis.setLabel("Date");
+        this.view.setXAxisLabel("μg/m3");
+        this.view.setYAxisLabel("Date");
         XYChart.Series series = new XYChart.Series();
         series.setName(selectedDataToShow);
         for (int i = 0; i < airPollutionData.size(); i++) {
@@ -161,6 +164,6 @@ public class AirPollutionController implements Initializable {
                     break;
             }
         }
-        airPollutionLineChart.getData().add(series);
+        this.view.setAirPollutionLineChartData(series);
     }
 }
