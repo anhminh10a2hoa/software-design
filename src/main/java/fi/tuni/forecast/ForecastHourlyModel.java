@@ -35,7 +35,12 @@ public class ForecastHourlyModel {
     private String sysPod;
     private String dtTxt;
 
-    public ForecastHourlyModel(int cityId, String cityName, double longitude, double latitude, String country, int population, int timezone, int sunrise, int sunset, int dt, double temperature, double feelsLike, double tempMin, double tempMax, double pressure, double seaLevel, double groundLevel, double humidity, double tempKf, int weatherId, String weatherMain, String weatherDescription, String weatherIcon, double cloudsAll, double windSpeed, double windDeg, double windGust, double visibility, double pop, double rain1h, String sysPod, String dtTxt) {
+    public ForecastHourlyModel(int cityId, String cityName, double longitude, double latitude, String country,
+            int population, int timezone, int sunrise, int sunset, int dt, double temperature, double feelsLike,
+            double tempMin, double tempMax, double pressure, double seaLevel, double groundLevel, double humidity,
+            double tempKf, int weatherId, String weatherMain, String weatherDescription, String weatherIcon,
+            double cloudsAll, double windSpeed, double windDeg, double windGust, double visibility, double pop,
+            double rain1h, String sysPod, String dtTxt) {
         this.cityId = cityId;
         this.cityName = cityName;
         this.longitude = longitude;

@@ -33,7 +33,9 @@ public class ForecastController implements Initializable {
    @FXML
    private TextField placeInput;
    @FXML
-   private ComboBox<String> forecastComboBox;
+   private ComboBox<String> dailySelectionComboBox;
+   @FXML
+   private ComboBox<String> days16SelectionComboBox;
    @FXML
    private Label errorLabel;
    @FXML
@@ -80,14 +82,9 @@ public class ForecastController implements Initializable {
       // Initialize the Image
       Image forecastIconImage = new Image("https://cdn0.iconfinder.com/data/icons/ikonate/48/line-chart-512.png");
       titleImage.setImage(forecastIconImage);
-      forecastComboBox.setItems(FXCollections.observableArrayList(""));
       errorLabel.setVisible(false);
       forecastTabPane.setVisible(false);
 
-      // Add a Listener to disable the place if 1 of the latitude or longitude is
-      // filled, and enable the place if both latitude and longitude are filled
-      // and disable the latitude and longitude if the place is filled and enable the
-      // latitude and longitude if the place is empty
       latitudeInput.textProperty().addListener((observable, oldValue, newValue) -> {
          if (!newValue.isEmpty()) {
             placeInput.setDisable(true);
@@ -115,6 +112,29 @@ public class ForecastController implements Initializable {
             longitudeInput.setDisable(false);
          }
       });
+      // Add the items to the combo box for daily selection
+      // public ForecastHourlyModel(int cityId, String cityName, double longitude,
+      // double latitude, String country, int population, int timezone, int sunrise,
+      // int sunset, int dt, double temperature, double feelsLike, double tempMin,
+      // double tempMax, double pressure, double seaLevel, double groundLevel, double
+      // humidity, double tempKf, int weatherId, String weatherMain, String
+      // weatherDescription, String weatherIcon, double cloudsAll, double windSpeed,
+      // double windDeg, double windGust, double visibility, double pop, double
+      // rain1h, String sysPod, String dtTxt) 
+      dailySelectionComboBox.setItems(FXCollections.observableArrayList("Temperature", "Feels like", "Temp min",
+            "Temp max", "Pressure", "Sea level", "Ground level", "Humidity", "Temp kf", "Weather ID", "Weather main",
+            "Weather description", "Weather icon", "Clouds all", "Wind speed", "Wind degree", "Wind gust", "Visibility",
+            "Pop", "Rain 1h", "Sys pod"));
+      
+      // Add the items to the combo box for 16 days selection
+      // public Forecast16DaysModel(String cityName, String longtitude, String latitude, String countryCode,
+      //       int population, int timezone, int timeStamp, double temperatureDay, double temperatureNight,
+      //       double temperatureEvening, double temperatureMorning, double feelsLikeDay, double feelsLikeNight,
+      //       double feelsLikeEvening, double feelsLikeMorning, double pressure, double humidity, double windSpeed,
+      //       double windDegree, double cloudiness, double rain, int sunrise, int sunset) {
+      days16SelectionComboBox.setItems(FXCollections.observableArrayList("Temperature day", "Temperature night", "Temperature evening",
+            "Temperature morning", "Feels like day", "Feels like night", "Feels like evening", "Feels like morning", "Pressure", "Humidity", "Wind speed",
+            "Wind degree", "Cloudiness", "Rain", "Sunrise", "Sunset"));
    }
 
    // Function for loading HTML data from the given URL
@@ -552,7 +572,6 @@ public class ForecastController implements Initializable {
          System.out.println("Latitude: " + latitudeValue);
          System.out.println("Longitude: " + longitudeValue);
          System.out.println("Place: " + place);
-         // http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit={limit}&appid={API key}
          String geoCodingURL = "https://api.openweathermap.org/geo/1.0/reverse?lat=" + latitudeValue + "&lon="
                + longitudeValue + "&limit=1&appid=cda257269cd8f052e74dc19afdd5252c";
 
@@ -575,16 +594,13 @@ public class ForecastController implements Initializable {
 
          try {
             errorLabel.setVisible(false);
-            
+
             // Get the data from the GeoCoding API
             HttpResponse<String> geoCodingResponse = HttpClient.newHttpClient().send(geoCodingRequest,
                   HttpResponse.BodyHandlers.ofString());
             geoCodingData = fetchGeoCodingData(geoCodingResponse);
 
-            // Display the data in the Place Input if the user input is latitude and longitude
-            if (place.isEmpty()) {
-               placeInput.setText(geoCodingData.get(0).getCityName() + ", " + geoCodingData.get(0).getCountry());
-            }
+            placeInput.setText(geoCodingData.get(0).getCityName() + ", " + geoCodingData.get(0).getCountry());
 
             // Get the data from the hourly forecast API
             HttpResponse<String> forecastHourlyResponse = HttpClient.newHttpClient().send(forecastHourlyRequest,

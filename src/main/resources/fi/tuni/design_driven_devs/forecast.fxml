@@ -28,8 +28,6 @@
          <children>
             <Label style="-fx-font-weight: bold;" text="Place:" />
             <TextField fx:id="placeInput" prefHeight="25.0" prefWidth="197.0" />
-            <Label style="-fx-font-weight: bold;" text="Selection:" />
-            <ComboBox fx:id="forecastComboBox" prefWidth="150.0" />
          </children>
       </HBox>
       <HBox prefHeight="35.0" prefWidth="716.0">
@@ -40,13 +38,25 @@
             <TextField fx:id="longitudeInput" />
          </children>
       </HBox>
-      <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
+      <VBox prefHeight="62.0" prefWidth="508.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label style="-fx-font-weight: bold;" text="Daily Selection:" />
+                  <ComboBox fx:id="dailySelectionComboBox" prefWidth="150.0" />
+                  <Label style="-fx-font-weight: bold;" text="16 Days Selection:" />
+                  <ComboBox fx:id="days16SelectionComboBox" prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button fx:id="resetWeatherButton" onAction="#resetForecastData" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Reset" />
             <Button fx:id="getWeatherButton" onAction="#getForecastData" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
          </children>
       </HBox>
+      <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
       <HBox prefHeight="383.0" prefWidth="257.0">
          <children>
             <TabPane fx:id="forecastTabPane" prefHeight="374.0" prefWidth="716.0" tabClosingPolicy="UNAVAILABLE">
