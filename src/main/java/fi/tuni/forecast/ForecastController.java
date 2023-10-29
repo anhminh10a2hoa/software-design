@@ -45,6 +45,7 @@ public class ForecastController implements Initializable {
    private List<ForecastHourlyModel> forecastHourlyData;
    private List<Forecast16DaysModel> forecast16DaysData;
    private List<ForecastYearlyModel> forecastYearlyData;
+   private List<GeoCodingModel> geoCodingData;
 
    @FXML
    protected void drawLineGraph() {
@@ -75,13 +76,45 @@ public class ForecastController implements Initializable {
       forecastHourlyData = new ArrayList<ForecastHourlyModel>();
       forecast16DaysData = new ArrayList<Forecast16DaysModel>();
       forecastYearlyData = new ArrayList<ForecastYearlyModel>();
-
+      geoCodingData = new ArrayList<GeoCodingModel>();
       // Initialize the Image
       Image forecastIconImage = new Image("https://cdn0.iconfinder.com/data/icons/ikonate/48/line-chart-512.png");
       titleImage.setImage(forecastIconImage);
       forecastComboBox.setItems(FXCollections.observableArrayList(""));
       errorLabel.setVisible(false);
       forecastTabPane.setVisible(false);
+
+      // Add a Listener to disable the place if 1 of the latitude or longitude is
+      // filled, and enable the place if both latitude and longitude are filled
+      // and disable the latitude and longitude if the place is filled and enable the
+      // latitude and longitude if the place is empty
+      latitudeInput.textProperty().addListener((observable, oldValue, newValue) -> {
+         if (!newValue.isEmpty()) {
+            placeInput.setDisable(true);
+         } else {
+            if (longitudeInput.getText().isEmpty()) {
+               placeInput.setDisable(false);
+            }
+         }
+      });
+      longitudeInput.textProperty().addListener((observable, oldValue, newValue) -> {
+         if (!newValue.isEmpty()) {
+            placeInput.setDisable(true);
+         } else {
+            if (latitudeInput.getText().isEmpty()) {
+               placeInput.setDisable(false);
+            }
+         }
+      });
+      placeInput.textProperty().addListener((observable, oldValue, newValue) -> {
+         if (!newValue.isEmpty()) {
+            latitudeInput.setDisable(true);
+            longitudeInput.setDisable(true);
+         } else {
+            latitudeInput.setDisable(false);
+            longitudeInput.setDisable(false);
+         }
+      });
    }
 
    // Function for loading HTML data from the given URL
@@ -272,20 +305,21 @@ public class ForecastController implements Initializable {
        */
       String responseBody = forecastHourlyRequest.body();
       JSONObject json = new JSONObject(responseBody);
-      String countryCode = json.getString("country");
-      int population = json.getInt("population");
-      int timezone = json.getInt("timezone");
-      int sunrise = json.getInt("sunrise");
-      int sunset = json.getInt("sunset");
+
+      JSONArray listForecastHourlyDataReturn = json.getJSONArray("list");
+
       JSONObject city = json.getJSONObject("city");
+      String countryCode = city.getString("country");
+      int population = city.getInt("population");
+      int timezone = city.getInt("timezone");
+      int sunrise = city.getInt("sunrise");
+      int sunset = city.getInt("sunset");
       int cityID = city.getInt("id");
       String cityName = city.getString("name");
+
       JSONObject coord = city.getJSONObject("coord");
       double latitude = coord.getDouble("lat");
       double longitude = coord.getDouble("lon");
-
-      
-      JSONArray listForecastHourlyDataReturn = json.getJSONArray("list");
       for (int i = 0; i < listForecastHourlyDataReturn.length(); i++) {
          JSONObject dataToJson = listForecastHourlyDataReturn.getJSONObject(i);
          int timeStamp = dataToJson.getInt("dt");
@@ -299,28 +333,31 @@ public class ForecastController implements Initializable {
          double groundLevel = main.getDouble("grnd_level");
          double humidity = main.getDouble("humidity");
          double tempKf = main.getDouble("temp_kf");
-         
+
          JSONArray weather = dataToJson.getJSONArray("weather");
          JSONObject weatherObject = weather.getJSONObject(0);
          int weatherID = weatherObject.getInt("id");
          String weatherMain = weatherObject.getString("main");
          String weatherDescription = weatherObject.getString("description");
-         
+
          String weatherIcon = weatherObject.getString("icon");
-         
+
          JSONObject clouds = dataToJson.getJSONObject("clouds");
          double cloudsAll = clouds.getDouble("all");
-         
+
          JSONObject wind = dataToJson.getJSONObject("wind");
          double windSpeed = wind.getDouble("speed");
          double windDegree = wind.getDouble("deg");
          double windGust = wind.getDouble("gust");
          double visibility = dataToJson.getDouble("visibility");
          double pop = dataToJson.getDouble("pop");
-         
-         JSONObject rain = dataToJson.getJSONObject("rain");
-         double rain1h = rain.getDouble("1h");
-         
+         // System.out.println(timeStamp);
+         double rain1h = 0;
+         try {
+            JSONObject rain = dataToJson.getJSONObject("rain");
+            rain1h = rain.getDouble("1h");
+         } catch (Exception e) {
+         }
          JSONObject sys = dataToJson.getJSONObject("sys");
          String sysPod = sys.getString("pod");
          String dtTxt = dataToJson.getString("dt_txt");
@@ -362,7 +399,11 @@ public class ForecastController implements Initializable {
          double windSpeed = dataToJson.getDouble("speed");
          double windDegree = dataToJson.getDouble("deg");
          double cloudiness = dataToJson.getDouble("clouds");
-         double rain = dataToJson.getDouble("rain");
+         double rain = 0;
+         try {
+            rain = dataToJson.getDouble("rain");
+         } catch (Exception e) {
+         }
          int sunrise = dataToJson.getInt("sunrise");
          int sunset = dataToJson.getInt("sunset");
 
@@ -449,67 +490,143 @@ public class ForecastController implements Initializable {
       return forecastYearlyData;
    }
 
+   private List<GeoCodingModel> fetchGeoCodingData(HttpResponse<String> geoCodingRequest) {
+      String responseBody = geoCodingRequest.body();
+      JSONArray json = new JSONArray(responseBody);
+      // Based on the comment above, extract cityName, country, latitude, longitude
+      for (int i = 0; i < json.length(); i++) {
+         JSONObject dataToJson = json.getJSONObject(i);
+         String cityName = dataToJson.getString("name");
+         String countryCode = dataToJson.getString("country");
+         double latitude = dataToJson.getDouble("lat");
+         double longitude = dataToJson.getDouble("lon");
+
+         GeoCodingModel model = new GeoCodingModel(cityName, countryCode, latitude, longitude);
+         geoCodingData.add(model);
+      }
+      return geoCodingData;
+   }
+
    @FXML
    protected void getForecastData(ActionEvent event) {
       // Get the forecast data based on the user input (latitude, longitude)
       System.out.println("Get forecast data");
       String latitude = latitudeInput.getText();
       String longitude = longitudeInput.getText();
+      String place = placeInput.getText();
 
       // Check if the input is valid
       if (latitude.isEmpty() || longitude.isEmpty()) {
-         errorLabel.setVisible(true);
-         errorLabel.setText("Please provide latitude and longitude!");
-      } else {
-         try {
-            double latitudeValue = Double.parseDouble(latitude);
-            double longitudeValue = Double.parseDouble(longitude);
-
-            // Print the latitude and longitude for debugging purposes
-            // System.out.println("Latitude: " + latitudeValue);
-            // System.out.println("Longitude: " + longitudeValue);
-            String forecastHourlyURL = "https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=" + latitudeValue
-                  + "&lon="
-                  + longitudeValue + "&appid=cda257269cd8f052e74dc19afdd5252c";
-            HttpRequest forecastHourlyRequest = createHttpRequest(forecastHourlyURL);
-
-            String forecast16DaysURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + latitudeValue
-                  + "&lon="
-                  + longitudeValue + "&APPID=cda257269cd8f052e74dc19afdd5252c";
-            HttpRequest forecast16DaysRequest = createHttpRequest(forecast16DaysURL);
-
-            String forecastYearlyUrl = "http://history.openweathermap.org/data/2.5/aggregated/year?lat="
-                  + latitudeValue + "&lon="
-                  + longitudeValue + "&appid=cda257269cd8f052e74dc19afdd5252c";
-            HttpRequest forecastYearlyRequest = createHttpRequest(forecastYearlyUrl);
-
-            try {
-               errorLabel.setVisible(false);
-               // Get the data from the hourly forecast API
-               HttpResponse<String> forecastHourlyResponse = HttpClient.newHttpClient().send(forecastHourlyRequest,
-                     HttpResponse.BodyHandlers.ofString());
-
-               // Get the data from the 16-day forecast API
-               HttpResponse<String> forecast16DaysResponse = HttpClient.newHttpClient().send(forecast16DaysRequest,
-                     HttpResponse.BodyHandlers.ofString());
-               forecast16DaysData = fetch16DaysData(forecast16DaysResponse);
-
-               // Get the data from the yearly forecast API
-               HttpResponse<String> forecastYearlyResponse = HttpClient.newHttpClient().send(forecastYearlyRequest,
-                     HttpResponse.BodyHandlers.ofString());
-               forecastYearlyData = fetchYearlyData(forecastYearlyResponse);
-
-               // Display the data
-               forecastTabPane.setVisible(true);
-               drawLineGraph();
-            } catch (IOException | InterruptedException e) {
-               errorLabel.setText("Can not fetch weather!");
-            }
-         } catch (NumberFormatException e) {
+         if (place.isEmpty()) {
             errorLabel.setVisible(true);
-            errorLabel.setText("Latitude and longitude must be a number!");
+            errorLabel.setText("Please provide latitude and longitude or place!");
+            return;
          }
       }
+
+      if (latitude.isEmpty() || longitude.isEmpty()) {
+         // Get the latitude and longitude based on the place
+         String geoCodingURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + place
+               + "&limit=1&appid=cda257269cd8f052e74dc19afdd5252c";
+         HttpRequest geoCodingRequest = createHttpRequest(geoCodingURL);
+         try {
+            errorLabel.setVisible(false);
+            HttpResponse<String> geoCodingResponse = HttpClient.newHttpClient().send(geoCodingRequest,
+                  HttpResponse.BodyHandlers.ofString());
+            geoCodingData = fetchGeoCodingData(geoCodingResponse);
+            latitude = String.valueOf(geoCodingData.get(0).getLatitude());
+            longitude = String.valueOf(geoCodingData.get(0).getLongitude());
+            // Set the latitude and longitude to the input fields
+            latitudeInput.setText(latitude);
+            longitudeInput.setText(longitude);
+         } catch (IOException | InterruptedException e) {
+            errorLabel.setText("Can not fetch weather!");
+         }
+      }
+
+      try {
+         double latitudeValue = Double.parseDouble(latitude);
+         double longitudeValue = Double.parseDouble(longitude);
+
+         // Print the latitude and longitude for debugging purposes
+         System.out.println("Latitude: " + latitudeValue);
+         System.out.println("Longitude: " + longitudeValue);
+         System.out.println("Place: " + place);
+         // http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit={limit}&appid={API key}
+         String geoCodingURL = "https://api.openweathermap.org/geo/1.0/reverse?lat=" + latitudeValue + "&lon="
+               + longitudeValue + "&limit=1&appid=cda257269cd8f052e74dc19afdd5252c";
+
+         HttpRequest geoCodingRequest = createHttpRequest(geoCodingURL);
+
+         String forecastHourlyURL = "https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=" + latitudeValue
+               + "&lon="
+               + longitudeValue + "&appid=cda257269cd8f052e74dc19afdd5252c";
+         HttpRequest forecastHourlyRequest = createHttpRequest(forecastHourlyURL);
+
+         String forecast16DaysURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + latitudeValue
+               + "&lon="
+               + longitudeValue + "&APPID=cda257269cd8f052e74dc19afdd5252c";
+         HttpRequest forecast16DaysRequest = createHttpRequest(forecast16DaysURL);
+
+         String forecastYearlyUrl = "http://history.openweathermap.org/data/2.5/aggregated/year?lat="
+               + latitudeValue + "&lon="
+               + longitudeValue + "&appid=cda257269cd8f052e74dc19afdd5252c";
+         HttpRequest forecastYearlyRequest = createHttpRequest(forecastYearlyUrl);
+
+         try {
+            errorLabel.setVisible(false);
+            
+            // Get the data from the GeoCoding API
+            HttpResponse<String> geoCodingResponse = HttpClient.newHttpClient().send(geoCodingRequest,
+                  HttpResponse.BodyHandlers.ofString());
+            geoCodingData = fetchGeoCodingData(geoCodingResponse);
+
+            // Display the data in the Place Input if the user input is latitude and longitude
+            if (place.isEmpty()) {
+               placeInput.setText(geoCodingData.get(0).getCityName() + ", " + geoCodingData.get(0).getCountry());
+            }
+
+            // Get the data from the hourly forecast API
+            HttpResponse<String> forecastHourlyResponse = HttpClient.newHttpClient().send(forecastHourlyRequest,
+                  HttpResponse.BodyHandlers.ofString());
+            forecastHourlyData = fetchHourlyData(forecastHourlyResponse);
+
+            // Get the data from the 16-day forecast API
+            HttpResponse<String> forecast16DaysResponse = HttpClient.newHttpClient().send(forecast16DaysRequest,
+                  HttpResponse.BodyHandlers.ofString());
+            forecast16DaysData = fetch16DaysData(forecast16DaysResponse);
+
+            // Get the data from the yearly forecast API
+            HttpResponse<String> forecastYearlyResponse = HttpClient.newHttpClient().send(forecastYearlyRequest,
+                  HttpResponse.BodyHandlers.ofString());
+            forecastYearlyData = fetchYearlyData(forecastYearlyResponse);
+
+            // Display the data
+            forecastTabPane.setVisible(true);
+            drawLineGraph();
+         } catch (IOException | InterruptedException e) {
+            errorLabel.setText("Can not fetch weather!");
+         }
+      } catch (NumberFormatException e) {
+         errorLabel.setVisible(true);
+         errorLabel.setText("Latitude and longitude must be a number!");
+      }
+
    }
 
+   @FXML
+   protected void resetForecastData(ActionEvent event) {
+      // Reset the forecast data
+      forecastHourlyData.clear();
+      forecast16DaysData.clear();
+      forecastYearlyData.clear();
+      geoCodingData.clear();
+      forecastTabPane.setVisible(false);
+
+      // Reset the input fields
+      latitudeInput.setText("");
+      longitudeInput.setText("");
+      placeInput.setText("");
+      errorLabel.setVisible(false);
+   }
 }
