@@ -75,10 +75,10 @@ public class ForecastController implements Initializable {
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       // Initialize the list
-      forecastHourlyData = new ArrayList<ForecastHourlyModel>();
-      forecast16DaysData = new ArrayList<Forecast16DaysModel>();
-      forecastYearlyData = new ArrayList<ForecastYearlyModel>();
-      geoCodingData = new ArrayList<GeoCodingModel>();
+      forecastHourlyData = new ArrayList<>();
+      forecast16DaysData = new ArrayList<>();
+      forecastYearlyData = new ArrayList<>();
+      geoCodingData = new ArrayList<>();
       // Initialize the Image
       Image forecastIconImage = new Image("https://cdn0.iconfinder.com/data/icons/ikonate/48/line-chart-512.png");
       titleImage.setImage(forecastIconImage);
@@ -497,7 +497,9 @@ public class ForecastController implements Initializable {
          double numClouds = clouds.getDouble("num");
 
          // Add to constructor
-         ForecastYearlyModel model = new ForecastYearlyModel(cityID, longitudeInput.getText(), latitudeInput.getText(),
+         double latitudeValue = Double.parseDouble(longitudeInput.getText());
+         double longitudeValue = Double.parseDouble(latitudeInput.getText());
+         ForecastYearlyModel model = new ForecastYearlyModel(cityID, latitudeValue, longitudeValue,
                month, day, recordMinTemp, recordMaxTemp, averageMinTemp, averageMaxTemp, medianTemp, meanTemp, p25Temp,
                p75Temp, stDevTemp, numTemp, minPressure, maxPressure, medianPressure, meanPressure, p25Pressure,
                p75Pressure, stDevPressure, numPressure, minHumidity, maxHumidity, medianHumidity, meanHumidity,

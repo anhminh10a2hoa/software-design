@@ -2,9 +2,9 @@ package fi.tuni.forecast;
 
 public class ForecastYearlyModel {
 
-    private String cityID;
-    private String longtitude;
-    private String latitude;
+    private int cityID;
+    private double longtitude;
+    private double latitude;
     private int month;
     private int day;
     private double recordMdoubleemp;
@@ -55,11 +55,7 @@ public class ForecastYearlyModel {
     private double stDevClouds;
     private double numClouds;
 
-    public ForecastYearlyModel(String cityID, String longtitude, String latitude, int month, int day, double recordMdoubleemp, double recordMaxTemp, double averageMdoubleemp, double averageMaxTemp, double medianTemp, double meanTemp, double p25Temp, double p75Temp, double stDevTemp, double numTemp, double minPressure, double maxPressure, double medianPressure, double meanPressure, double p25Pressure, double p75Pressure, double stDevPressure, double numPressure, double minHumidity, double maxHumidity, double medianHumidity, double meanHumidity, double p25Humidity, double p75Humidity, double stDevHumidity, double numHumidity, double minWind, double maxWind, double medianWind, double meanWind, double p25Wind, double p75Wind, double stDevWind, double numWind, double minClouds, double maxClouds, double medianClouds, double meanClouds, double p25Clouds, double p75Clouds, double stDevClouds, double numClouds) {
-        this(month, cityID, longtitude, day, day, recordMdoubleemp, recordMaxTemp, averageMdoubleemp, averageMaxTemp, medianTemp, meanTemp, p25Temp, p75Temp, stDevTemp, numTemp, minPressure, maxPressure, medianPressure, meanPressure, p25Pressure, p75Pressure, stDevPressure, numPressure, minHumidity, maxHumidity, medianHumidity, meanHumidity, p25Humidity, p75Humidity, stDevHumidity, numHumidity, minWind, maxWind, medianWind, meanWind, p25Wind, p75Wind, stDevWind, numWind, minClouds, maxClouds, medianClouds, meanClouds, p25Clouds, p75Clouds, stDevClouds, numClouds);
-    }
-
-    public ForecastYearlyModel(int month, String cityID, String longtitude, int day, int day1, double recordMdoubleemp, double recordMaxTemp, double averageMdoubleemp, double averageMaxTemp, double medianTemp, double meanTemp, double p25Temp, double p75Temp, double stDevTemp, double numTemp, double minPressure, double maxPressure, double medianPressure, double meanPressure, double p25Pressure, double p75Pressure, double stDevPressure, double numPressure, double minHumidity, double maxHumidity, double medianHumidity, double meanHumidity, double p25Humidity, double p75Humidity, double stDevHumidity, double numHumidity, double minWind, double maxWind, double medianWind, double meanWind, double p25Wind, double p75Wind, double stDevWind, double numWind, double minClouds, double maxClouds, double medianClouds, double meanClouds, double p25Clouds, double p75Clouds, double stDevClouds, double numClouds) {
+    public ForecastYearlyModel(int cityID, double longtitude, double latitude, int month, int day, double recordMdoubleemp, double recordMaxTemp, double averageMdoubleemp, double averageMaxTemp, double medianTemp, double meanTemp, double p25Temp, double p75Temp, double stDevTemp, double numTemp, double minPressure, double maxPressure, double medianPressure, double meanPressure, double p25Pressure, double p75Pressure, double stDevPressure, double numPressure, double minHumidity, double maxHumidity, double medianHumidity, double meanHumidity, double p25Humidity, double p75Humidity, double stDevHumidity, double numHumidity, double minWind, double maxWind, double medianWind, double meanWind, double p25Wind, double p75Wind, double stDevWind, double numWind, double minClouds, double maxClouds, double medianClouds, double meanClouds, double p25Clouds, double p75Clouds, double stDevClouds, double numClouds) {
         this.cityID = cityID;
         this.longtitude = longtitude;
         this.latitude = latitude;
@@ -109,27 +105,27 @@ public class ForecastYearlyModel {
         this.numClouds = numClouds;
     }
 
-    public String getCityID() {
+    public int getCityID() {
         return cityID;
     }
 
-    public void setCityID(String cityID) {
+    public void setCityID(int cityID) {
         this.cityID = cityID;
     }
 
-    public String getLongtitude() {
+    public double getLongtitude() {
         return longtitude;
     }
 
-    public void setLongtitude(String longtitude) {
+    public void setLongtitude(double longtitude) {
         this.longtitude = longtitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -484,7 +480,6 @@ public class ForecastYearlyModel {
     public void setNumClouds(double numClouds) {
         this.numClouds = numClouds;
     }
-
 
 
 }
