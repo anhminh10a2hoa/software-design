@@ -68,6 +68,10 @@ public class MainWindowController {
         statisticRadioButton.setToggleGroup(toggleGroup);
         airPollutionRadioButton.setToggleGroup(toggleGroup);
 
+        // Set the default selection to the first radio button and load the corresponding FXML
+        toggleGroup.selectToggle(weatherRadioButton);
+        loadFXML("weather.fxml");
+
         toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             // Get the selection from the ToggleGroup and assign it to a String variable
             String value = toggleGroup.getSelectedToggle().getUserData().toString();
@@ -87,7 +91,6 @@ public class MainWindowController {
                 default:
                     break;
             }
-            System.out.println(value);
             loadFXML(value);
         });
     }
