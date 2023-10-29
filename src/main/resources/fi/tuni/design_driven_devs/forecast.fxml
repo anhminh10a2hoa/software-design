@@ -1,56 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <!-- <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.forecast.ForecastController"> -->
 
-<VBox alignment="CENTER" prefHeight="421.0" prefWidth="516.0" spacing="20.0" style="-fx-background-color: #FFF2CC;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.forecast.ForecastController">
+<VBox alignment="CENTER" prefHeight="722.0" prefWidth="506.0" spacing="20.0" style="-fx-background-color: #FFF2CC;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.forecast.ForecastController">
    <children>
-      <Label prefHeight="17.0" prefWidth="53.0" text="Forecast" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Forecast" />
+            <ImageView fx:id="titleImage" fitHeight="48.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
+      <HBox prefHeight="35.0" prefWidth="716.0">
+         <children>
+            <Label style="-fx-font-weight: bold;" text="Place:" />
+            <TextField fx:id="placeInput" prefHeight="25.0" prefWidth="197.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="35.0" prefWidth="716.0">
+         <children>
+            <Label style="-fx-font-weight: bold;" text="Latitude:" />
+            <TextField fx:id="latitudeInput" prefHeight="25.0" prefWidth="197.0" />
+            <Label style="-fx-font-weight: bold;" text="Longitude:" />
+            <TextField fx:id="longitudeInput" />
+         </children>
+      </HBox>
+      <VBox prefHeight="62.0" prefWidth="508.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label style="-fx-font-weight: bold;" text="Daily Selection:" />
+                  <ComboBox fx:id="dailySelectionComboBox" prefWidth="150.0" />
+                  <Label style="-fx-font-weight: bold;" text="16 Days Selection:" />
+                  <ComboBox fx:id="days16SelectionComboBox" prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="resetWeatherButton" onAction="#resetForecastData" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Reset" />
+            <Button fx:id="getWeatherButton" onAction="#getForecastData" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
+         </children>
+      </HBox>
+      <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
       <HBox prefHeight="383.0" prefWidth="257.0">
          <children>
-            <TabPane prefHeight="383.0" prefWidth="724.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="forecastTabPane" prefHeight="374.0" prefWidth="716.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Hourly">
-                     <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                </Tab>
                   <Tab text="Daily">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <LineChart fx:id="dailyForecastLineChart">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" fx:id="xAxis11" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis fx:id="yAxis11" side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                           </children></AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Weekly">
+                  <Tab text="16 days">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="381.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="381.0">
+                           <children>
+                              <LineChart fx:id="weeklyForecastLineChart">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis fx:id="yAxis1" side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                           </children></AnchorPane>
                      </content>
                   </Tab>
-                <Tab text="Monthly">
-                     <content>
-                        <AnchorPane prefHeight="354.0" prefWidth="367.0" />
-                     </content>
-                </Tab>
               </tabs>
             </TabPane>
-            <VBox prefHeight="383.0" prefWidth="487.0">
-               <children>
-                  <Label style="-fx-font-weight: bold;" text="Places:" />
-                  <TextField fx:id="latitudeInput1" prefHeight="25.0" prefWidth="197.0" />
-                  <Label style="-fx-font-weight: bold;" text="Latitude:" />
-                  <TextField fx:id="latitudeInput" prefHeight="25.0" prefWidth="197.0" />
-                  <Label style="-fx-font-weight: bold;" text="Longitude:" />
-                  <TextField fx:id="longitudeInput" />
-                  <Button fx:id="getWeatherButton" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
-               </children>
-            </VBox>
          </children>
       </HBox>
    </children>
