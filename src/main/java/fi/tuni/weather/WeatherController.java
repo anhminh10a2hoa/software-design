@@ -80,7 +80,7 @@ public class WeatherController implements Initializable {
             try {
                 double latitudeValue = Double.parseDouble(latitude);
                 double longitudeValue = Double.parseDouble(longitude);
-                String apiKey = "7ab8c7f2be8a514f54ffadb36862fa74"; // Replace with your OpenWeatherMap API key
+                String apiKey = "cda257269cd8f052e74dc19afdd5252c"; // Replace with your OpenWeatherMap API key
 
                 // Build the API request URL
                 HttpRequest request = HttpRequest.newBuilder()
