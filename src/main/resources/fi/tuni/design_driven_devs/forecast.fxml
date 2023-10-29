@@ -46,21 +46,6 @@
          <children>
             <TabPane fx:id="forecastTabPane" prefHeight="374.0" prefWidth="716.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Hourly">
-                     <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <LineChart fx:id="hourlyForecastLineChart">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" fx:id="xAxis111" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis fx:id="yAxis111" side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
-                           </children></AnchorPane>
-                     </content>
-                </Tab>
                   <Tab text="Daily">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -91,21 +76,6 @@
                            </children></AnchorPane>
                      </content>
                   </Tab>
-                <Tab text="365 days">
-                     <content>
-                        <AnchorPane prefHeight="354.0" prefWidth="367.0">
-                           <children>
-                              <LineChart fx:id="monthlyForecastLineChart">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" fx:id="xAxis" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis fx:id="yAxis" side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
-                           </children></AnchorPane>
-                     </content>
-                </Tab>
               </tabs>
             </TabPane>
          </children>
