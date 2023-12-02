@@ -1,5 +1,8 @@
 package fi.tuni.function;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
+
 public class Function {
     /**
      * Convert Kelvin to Celsius
@@ -18,4 +21,13 @@ public class Function {
         java.util.Date date = new java.util.Date(timeStamp);
         return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
     }
+
+       // Function for loading HTML data from the given URL
+   public static HttpRequest createHttpRequest(String url) {
+      HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .method("GET", HttpRequest.BodyPublishers.noBody())
+            .build();
+      return request;
+   }
 }
