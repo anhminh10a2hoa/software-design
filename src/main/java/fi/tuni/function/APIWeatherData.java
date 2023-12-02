@@ -1,8 +1,6 @@
 package fi.tuni.function;
 
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONObject;
 

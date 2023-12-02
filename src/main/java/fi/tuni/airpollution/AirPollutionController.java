@@ -27,6 +27,8 @@ import javafx.scene.control.ComboBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fi.tuni.function.APIAirPollutionData;
+
 public class AirPollutionController implements Initializable {
     @FXML
     private Label errorLabel;
@@ -93,31 +95,10 @@ public class AirPollutionController implements Initializable {
                                     .method("GET", HttpRequest.BodyPublishers.noBody())
                                     .build();
                 try {
-                    errorLabel.setVisible(false);
+                    this.view.clearErrorLabel();
                     airPollutionData.clear();
                     this.view.clearAirPollutionLineChart();
-                    
-                    HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-                    String responseBody = response.body();
-
-                    // Parse the JSON response
-                    JSONObject json = new JSONObject(responseBody);
-                    JSONArray listAirPollutionDataReturn = json.getJSONArray("list");
-                    for (int i = 0; i < listAirPollutionDataReturn.length(); i++) {
-                      JSONObject dataToJson = listAirPollutionDataReturn.getJSONObject(i);
-                      double coValue = dataToJson.getJSONObject("components").getDouble("co");
-                      double noValue = dataToJson.getJSONObject("components").getDouble("no");
-                      double no2Value = dataToJson.getJSONObject("components").getDouble("no2");
-                      double o3Value = dataToJson.getJSONObject("components").getDouble("o3");
-                      double so2Value = dataToJson.getJSONObject("components").getDouble("so2");
-                      double pm25Value = dataToJson.getJSONObject("components").getDouble("pm2_5");
-                      double pm10Value = dataToJson.getJSONObject("components").getDouble("pm10");
-                      double nh3Value = dataToJson.getJSONObject("components").getDouble("nh3");
-                      int dateTime = dataToJson.getInt("dt");
-                      this.model = new AirPollutionModel(coValue, noValue, no2Value, o3Value, so2Value, pm25Value, pm10Value, nh3Value);
-                      this.model.setDateTime(dateTime);
-                      airPollutionData.add(this.model);
-                    }
+                    airPollutionData = APIAirPollutionData.fetchAirPollutionData(HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()));
                     this.view.setVisibleAirPollutionLineChart(true);
                     drawLineGraph();
                 } catch (IOException | InterruptedException e) {
