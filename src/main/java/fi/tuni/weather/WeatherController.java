@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import fi.tuni.function.*;
 
 public class WeatherController implements Initializable {
 
@@ -82,20 +83,12 @@ public class WeatherController implements Initializable {
                 double longitudeValue = Double.parseDouble(longitude);
                 String apiKey = "cda257269cd8f052e74dc19afdd5252c"; // Replace with your OpenWeatherMap API key
 
-                // Build the API request URL
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://api.openweathermap.org/data/2.5/weather?lat="
-                                + latitudeValue + "&lon=" + longitudeValue + "&APPID=" + apiKey))
-                        .method("GET", HttpRequest.BodyPublishers.noBody())
-                        .build();
+                HttpRequest request = Function.createHttpRequest("https://api.openweathermap.org/data/2.5/weather?lat="
+                        + latitudeValue + "&lon=" + longitudeValue + "&APPID=" + apiKey);
                 try {
-                    HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-                    String responseBody = response.body();
-
-                    // Parse the JSON response
-                    JSONObject json = new JSONObject(responseBody);
+                    WeatherModel model = APIWeatherData.fetchWeatherData(HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()));
                     view.clearErrorLabel();
-                    updateUI(json);
+                    updateUI(model);
                 } catch (IOException | InterruptedException e) {
                     view.setErrorLabel("Can not fetch weather!");
                 }
@@ -111,26 +104,16 @@ public class WeatherController implements Initializable {
      *
      * @param json
      */
-    private void updateUI(JSONObject json) {
-        double temp = json.getJSONObject("main").getDouble("temp");
-        double temp_min = json.getJSONObject("main").getDouble("temp_min");
-        double temp_max = json.getJSONObject("main").getDouble("temp_max");
-        double feels_like = json.getJSONObject("main").getDouble("feels_like");
-        double pressure = json.getJSONObject("main").getDouble("pressure");
-        double humidity = json.getJSONObject("main").getDouble("humidity");
-        String weatherDescription = json.getJSONArray("weather").getJSONObject(0).getString("main")
-                + " - " + json.getJSONArray("weather").getJSONObject(0).getString("description");
+    private void updateUI(WeatherModel model) {
 
-        this.model = new WeatherModel(temp, temp_max, temp_min, feels_like, humidity, pressure, weatherDescription);
-
-        view.setTemperatureLabel("Temperature: " + this.model.getTemperature() + "°C");
-        view.setMaxTemperatureLabel("Max temperature: " + this.model.getMaxTemperature() + "°C");
-        view.setMinTemperatureLabel("Min temperature: " + this.model.getMinTemperature() + "°C");
-        view.setFeelsLikeLabel("Feels like: " + this.model.getFeelsLike() + "°C");
-        view.setPressureLabel("Pressure: " + this.model.getPressure());
-        view.setHumidityLabel("Humidity: " + this.model.getHumidity() + "%");
-
-        String iconCode = json.getJSONArray("weather").getJSONObject(0).getString("icon");
+        view.setTemperatureLabel("Temperature: " + model.getTemperature() + "°C");
+        view.setMaxTemperatureLabel("Max temperature: " + model.getMaxTemperature() + "°C");
+        view.setMinTemperatureLabel("Min temperature: " + model.getMinTemperature() + "°C");
+        view.setFeelsLikeLabel("Feels like: " + model.getFeelsLike() + "°C");
+        view.setPressureLabel("Pressure: " + model.getPressure());
+        view.setHumidityLabel("Humidity: " + model.getHumidity() + "%");
+        String weatherDescription = model.getWeatherDescription();
+        String iconCode = model.getIconCode();
         String iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
         // Load the image and set it in the view
         // You can use JavaFX Image and ImageView to load and display the image

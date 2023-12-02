@@ -1,5 +1,7 @@
 package fi.tuni.weather;
+
 import fi.tuni.function.Function;
+
 public class WeatherModel {
 
     private double temperature;
@@ -9,6 +11,7 @@ public class WeatherModel {
     private double humidity;
     private double pressure;
     private String weatherDescription;
+    private String iconCode;
 
     /**
      * Default constructor
@@ -30,9 +33,11 @@ public class WeatherModel {
      * @param humidity
      * @param pressure
      * @param weatherDescription
+     * @param iconCode
      */
+
     public WeatherModel(double temperature, double maxTemperature, double minTemperature,
-            double feelsLike, double humidity, double pressure, String weatherDescription) {
+            double feelsLike, double humidity, double pressure, String weatherDescription, String iconCode) {
         this.temperature = temperature;
         this.maxTemperature = maxTemperature;
         this.minTemperature = minTemperature;
@@ -40,6 +45,7 @@ public class WeatherModel {
         this.humidity = humidity;
         this.pressure = pressure;
         this.weatherDescription = weatherDescription;
+        this.iconCode = iconCode;
     }
 
     /**
@@ -168,5 +174,21 @@ public class WeatherModel {
         this.weatherDescription = weatherDescription;
     }
 
-    
+    /**
+     * Get icon code
+     *
+     * @return icon code
+     */
+    public String getIconCode() {
+        return iconCode;
+    }
+
+    /**
+     * Set icon code
+     * 
+     * @param iconCode
+     */
+    public void setIconCode(String iconCode) {
+        this.iconCode = iconCode;
+    }
 }
