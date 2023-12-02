@@ -7,13 +7,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
 
+import fi.tuni.function.APIWeatherData;
+import fi.tuni.function.Function;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import fi.tuni.function.*;
 
 public class WeatherController implements Initializable {
 
@@ -52,7 +53,7 @@ public class WeatherController implements Initializable {
 
     @FXML
     private TextField longitudeInput;
-
+    private WeatherModel model;
     private WeatherView view;
 
     /**
@@ -94,7 +95,7 @@ public class WeatherController implements Initializable {
                 HttpRequest request = Function.createHttpRequest("https://api.openweathermap.org/data/2.5/weather?lat="
                         + latitudeValue + "&lon=" + longitudeValue + "&APPID=" + apiKey);
                 try {
-                    WeatherModel model = APIWeatherData.fetchWeatherData(HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()));
+                    model = APIWeatherData.fetchWeatherData(HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()));
                     view.clearErrorLabel();
                     updateUI(model);
                 } catch (IOException | InterruptedException e) {
