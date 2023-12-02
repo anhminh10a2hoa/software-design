@@ -28,20 +28,20 @@
       <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="716.0" spacing="5.0">
          <children>
             <Label style="-fx-font-weight: bold;" text="Place:" />
-            <TextField fx:id="placeInput" alignment="CENTER" prefHeight="25.0" prefWidth="197.0" />
+            <TextField fx:id="placeInput" alignment="CENTER" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="35.0" prefWidth="716.0" spacing="10.0">
          <children>
             <Label style="-fx-font-weight: bold;" text="Latitude:" />
-            <TextField fx:id="latitudeInput" alignment="CENTER" prefHeight="25.0" prefWidth="197.0" />
+            <TextField fx:id="latitudeInput" alignment="CENTER" />
             <Label style="-fx-font-weight: bold;" text="Longitude:" />
             <TextField fx:id="longitudeInput" alignment="CENTER" />
          </children>
       </HBox>
       <VBox prefHeight="62.0" prefWidth="508.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <Label style="-fx-font-weight: bold;" text="Daily Selection:" />
                   <ComboBox fx:id="dailySelectionComboBox" prefWidth="150.0" />
@@ -55,7 +55,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <Label style="-fx-font-weight: bold;" text="1 Year Selection:" />
                   <ComboBox fx:id="yearlySelectionComboBox" prefWidth="150.0" />
@@ -63,9 +63,9 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="569.0" spacing="50.0">
+      <HBox alignment="CENTER" spacing="50.0">
          <children>
-            <Button fx:id="resetWeatherButton" onAction="#resetForecastData" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Reset" />
+            <Button fx:id="resetWeatherButton" onAction="#resetForecastData" prefWidth="100.0" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Reset" />
             <Button fx:id="getWeatherButton" alignment="CENTER" onAction="#getForecastData" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #3498db;                          -fx-text-fill: white;                          -fx-font-size: 14px;                          -fx-padding: 10px;                         -fx-cursor: hand;" text="Get weather" />
          </children>
          <opaqueInsets>
@@ -76,20 +76,20 @@
          </VBox.margin>
       </HBox>
       <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
-      <HBox alignment="CENTER" prefHeight="383.0" prefWidth="257.0">
+      <HBox alignment="CENTER">
          <children>
-            <TabPane fx:id="forecastTabPane" prefHeight="356.0" prefWidth="614.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="forecastTabPane" prefHeight="1.0E16" prefWidth="1.0E16" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab text="Daily">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane>
                            <children>
                               <LineChart fx:id="dailyForecastLineChart" layoutY="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <xAxis>
-                                    <CategoryAxis side="BOTTOM" fx:id="xAxis11" />
+                                    <CategoryAxis side="BOTTOM" fx:id="xAxisDaily" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis fx:id="yAxis11" side="LEFT" />
+                                    <NumberAxis fx:id="yAxisDaily" side="LEFT" />
                                  </yAxis>
                               </LineChart>
                            </children></AnchorPane>
@@ -97,14 +97,14 @@
                   </Tab>
                   <Tab text="16 days">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="381.0">
+                        <AnchorPane>
                            <children>
-                              <LineChart fx:id="weeklyForecastLineChart" prefHeight="326.4" prefWidth="614.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <LineChart fx:id="weeklyForecastLineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <xAxis>
-                                    <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
+                                    <CategoryAxis side="BOTTOM" fx:id="xAxis16Days" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis fx:id="yAxis1" side="LEFT" />
+                                    <NumberAxis fx:id="yAxis16Days" side="LEFT" />
                                  </yAxis>
                               </LineChart>
                            </children></AnchorPane>
@@ -112,14 +112,14 @@
                   </Tab>
                   <Tab text="1 year">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="381.0">
+                        <AnchorPane>
                            <children>
-                              <LineChart fx:id="yearlyForecastLineChart" prefHeight="326.4" prefWidth="614.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <LineChart fx:id="yearlyForecastLineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <xAxis>
-                                    <CategoryAxis side="BOTTOM" fx:id="xAxis12" />
+                                    <CategoryAxis side="BOTTOM" fx:id="xAxisYearly" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis fx:id="yAxis12" side="LEFT" />
+                                    <NumberAxis fx:id="yAxisYearly" side="LEFT" />
                                  </yAxis>
                               </LineChart>
                            </children>

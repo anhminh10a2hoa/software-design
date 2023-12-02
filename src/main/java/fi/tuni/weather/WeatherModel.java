@@ -1,5 +1,5 @@
 package fi.tuni.weather;
-
+import fi.tuni.function.Function;
 public class WeatherModel {
 
     private double temperature;
@@ -48,7 +48,7 @@ public class WeatherModel {
      * @return temperature in Celsius
      */
     public double getTemperature() {
-        return convertKelvinToCelsius(temperature);
+        return Function.convertKelvinToCelsius(temperature);
     }
 
     /**
@@ -57,7 +57,7 @@ public class WeatherModel {
      * @return max temperature in Celsius
      */
     public double getMaxTemperature() {
-        return convertKelvinToCelsius(maxTemperature);
+        return Function.convertKelvinToCelsius(maxTemperature);
     }
 
     /**
@@ -66,7 +66,7 @@ public class WeatherModel {
      * @return min temperature in Celsius
      */
     public double getMinTemperature() {
-        return convertKelvinToCelsius(minTemperature);
+        return Function.convertKelvinToCelsius(minTemperature);
     }
 
     /**
@@ -75,7 +75,7 @@ public class WeatherModel {
      * @return feels like temperature in Celsius
      */
     public double getFeelsLike() {
-        return convertKelvinToCelsius(feelsLike);
+        return Function.convertKelvinToCelsius(feelsLike);
     }
 
     /**
@@ -168,14 +168,5 @@ public class WeatherModel {
         this.weatherDescription = weatherDescription;
     }
 
-    /**
-     * Convert Kelvin to Celsius
-     *
-     * @param kelvinTemperature
-     * @return temperature in Celsius
-     */
-    public double convertKelvinToCelsius(double kelvinTemperature) {
-        double formatValue = kelvinTemperature - 273.15;
-        return (double) Math.floor(formatValue * 100) / 100;
-    }
+    
 }

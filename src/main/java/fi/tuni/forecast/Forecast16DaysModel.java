@@ -1,5 +1,5 @@
 package fi.tuni.forecast;
-
+import fi.tuni.function.Function;
 public class Forecast16DaysModel {
 
     private String cityName;
@@ -39,14 +39,16 @@ public class Forecast16DaysModel {
         this.population = population;
         this.timezone = timezone;
         this.timeStamp = timeStamp;
-        this.temperatureDay = temperatureDay;
-        this.temperatureNight = temperatureNight;
-        this.temperatureEvening = temperatureEvening;
-        this.temperatureMorning = temperatureMorning;
-        this.feelsLikeDay = feelsLikeDay;
-        this.feelsLikeNight = feelsLikeNight;
-        this.feelsLikeEvening = feelsLikeEvening;
-        this.feelsLikeMorning = feelsLikeMorning;
+        
+        this.temperatureDay = Function.convertKelvinToCelsius(temperatureDay);
+        this.temperatureNight = Function.convertKelvinToCelsius(temperatureNight);
+        this.temperatureEvening = Function.convertKelvinToCelsius(temperatureEvening);
+        this.temperatureMorning = Function.convertKelvinToCelsius(temperatureMorning);
+        this.feelsLikeDay = Function.convertKelvinToCelsius(feelsLikeDay);
+        this.feelsLikeNight = Function.convertKelvinToCelsius(feelsLikeNight);
+        this.feelsLikeEvening = Function.convertKelvinToCelsius(feelsLikeEvening);
+        this.feelsLikeMorning = Function.convertKelvinToCelsius(feelsLikeMorning);
+
         this.pressure = pressure;
         this.humidity = humidity;
         this.windSpeed = windSpeed;

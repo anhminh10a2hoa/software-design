@@ -1,5 +1,7 @@
 package fi.tuni.forecast;
 
+import fi.tuni.function.Function;
+
 // Make a class for saving all the json component above
 public class ForecastHourlyModel {
     private int cityId;
@@ -51,10 +53,12 @@ public class ForecastHourlyModel {
         this.sunrise = sunrise;
         this.sunset = sunset;
         this.dt = dt;
-        this.temperature = temperature;
-        this.feelsLike = feelsLike;
-        this.tempMin = tempMin;
-        this.tempMax = tempMax;
+        
+        this.temperature = Function.convertKelvinToCelsius(temperature);
+        this.feelsLike = Function.convertKelvinToCelsius(feelsLike);
+        this.tempMin = Function.convertKelvinToCelsius(tempMin);
+        this.tempMax = Function.convertKelvinToCelsius(tempMax);
+
         this.pressure = pressure;
         this.seaLevel = seaLevel;
         this.groundLevel = groundLevel;
@@ -330,5 +334,8 @@ public class ForecastHourlyModel {
     public void setDtTxt(String dtTxt) {
         this.dtTxt = dtTxt;
     }
+
+
+
 
 }

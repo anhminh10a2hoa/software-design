@@ -1,5 +1,5 @@
 package fi.tuni.forecast;
-
+import fi.tuni.function.Function;
 public class ForecastYearlyModel {
 
     private int cityID;
@@ -7,9 +7,9 @@ public class ForecastYearlyModel {
     private double latitude;
     private int month;
     private int day;
-    private double recordMdoubleemp;
+    private double recordMinTemp;
     private double recordMaxTemp;
-    private double averageMdoubleemp;
+    private double averageMinTemp;
     private double averageMaxTemp;
     private double medianTemp;
     private double meanTemp;
@@ -55,22 +55,25 @@ public class ForecastYearlyModel {
     private double stDevClouds;
     private double numClouds;
 
-    public ForecastYearlyModel(int cityID, double longtitude, double latitude, int month, int day, double recordMdoubleemp, double recordMaxTemp, double averageMdoubleemp, double averageMaxTemp, double medianTemp, double meanTemp, double p25Temp, double p75Temp, double stDevTemp, double numTemp, double minPressure, double maxPressure, double medianPressure, double meanPressure, double p25Pressure, double p75Pressure, double stDevPressure, double numPressure, double minHumidity, double maxHumidity, double medianHumidity, double meanHumidity, double p25Humidity, double p75Humidity, double stDevHumidity, double numHumidity, double minWind, double maxWind, double medianWind, double meanWind, double p25Wind, double p75Wind, double stDevWind, double numWind, double minClouds, double maxClouds, double medianClouds, double meanClouds, double p25Clouds, double p75Clouds, double stDevClouds, double numClouds) {
+    public ForecastYearlyModel(int cityID, double longtitude, double latitude, int month, int day, double recordMinTemp, double recordMaxTemp, double averageMinTemp, double averageMaxTemp, double medianTemp, double meanTemp, double p25Temp, double p75Temp, double stDevTemp, double numTemp, double minPressure, double maxPressure, double medianPressure, double meanPressure, double p25Pressure, double p75Pressure, double stDevPressure, double numPressure, double minHumidity, double maxHumidity, double medianHumidity, double meanHumidity, double p25Humidity, double p75Humidity, double stDevHumidity, double numHumidity, double minWind, double maxWind, double medianWind, double meanWind, double p25Wind, double p75Wind, double stDevWind, double numWind, double minClouds, double maxClouds, double medianClouds, double meanClouds, double p25Clouds, double p75Clouds, double stDevClouds, double numClouds) {
         this.cityID = cityID;
         this.longtitude = longtitude;
         this.latitude = latitude;
         this.month = month;
         this.day = day;
-        this.recordMdoubleemp = recordMdoubleemp;
-        this.recordMaxTemp = recordMaxTemp;
-        this.averageMdoubleemp = averageMdoubleemp;
-        this.averageMaxTemp = averageMaxTemp;
-        this.medianTemp = medianTemp;
-        this.meanTemp = meanTemp;
-        this.p25Temp = p25Temp;
-        this.p75Temp = p75Temp;
-        this.stDevTemp = stDevTemp;
-        this.numTemp = numTemp;
+
+        
+        this.recordMinTemp = Function.convertKelvinToCelsius(recordMinTemp);
+        this.recordMaxTemp = Function.convertKelvinToCelsius(recordMaxTemp);
+        this.averageMinTemp = Function.convertKelvinToCelsius(averageMinTemp);
+        this.averageMaxTemp = Function.convertKelvinToCelsius(averageMaxTemp);
+        this.medianTemp = Function.convertKelvinToCelsius(medianTemp);
+        this.meanTemp = Function.convertKelvinToCelsius(meanTemp);
+        this.p25Temp = Function.convertKelvinToCelsius(p25Temp);
+        this.p75Temp = Function.convertKelvinToCelsius(p75Temp);
+        this.stDevTemp = Function.convertKelvinToCelsius(stDevTemp);
+        this.numTemp = Function.convertKelvinToCelsius(numTemp);
+
         this.minPressure = minPressure;
         this.maxPressure = maxPressure;
         this.medianPressure = medianPressure;
@@ -145,12 +148,12 @@ public class ForecastYearlyModel {
         this.day = day;
     }
 
-    public double getRecordMdoubleemp() {
-        return recordMdoubleemp;
+    public double getRecordMinTemp() {
+        return recordMinTemp;
     }
 
-    public void setRecordMdoubleemp(double recordMdoubleemp) {
-        this.recordMdoubleemp = recordMdoubleemp;
+    public void setRecordMinTemp(double recordMinTemp) {
+        this.recordMinTemp = recordMinTemp;
     }
 
     public double getRecordMaxTemp() {
@@ -161,12 +164,12 @@ public class ForecastYearlyModel {
         this.recordMaxTemp = recordMaxTemp;
     }
 
-    public double getAverageMdoubleemp() {
-        return averageMdoubleemp;
+    public double getAverageMinTemp() {
+        return averageMinTemp;
     }
 
-    public void setAverageMdoubleemp(double averageMdoubleemp) {
-        this.averageMdoubleemp = averageMdoubleemp;
+    public void setAverageMinTemp(double averageMinTemp) {
+        this.averageMinTemp = averageMinTemp;
     }
 
     public double getAverageMaxTemp() {
