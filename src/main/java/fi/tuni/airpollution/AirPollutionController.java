@@ -122,8 +122,8 @@ public class AirPollutionController implements Initializable {
     @FXML 
     protected void drawLineGraph() {
         String selectedDataToShow = airPollutionComboBox.getValue();
-        this.view.setXAxisLabel("μg/m3");
-        this.view.setYAxisLabel("Date");
+        this.view.setXAxisLabel("Date");
+        this.view.setYAxisLabel("μg/m3");
         XYChart.Series series = new XYChart.Series();
         series.setName(selectedDataToShow);
         for (int i = 0; i < airPollutionData.size(); i++) {

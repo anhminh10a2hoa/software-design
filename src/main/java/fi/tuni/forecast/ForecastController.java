@@ -8,10 +8,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-<<<<<<< HEAD
-=======
-
->>>>>>> 105190cf7be5d42b85e5298e76688ad9b11c03fa
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -606,25 +602,6 @@ public class ForecastController implements Initializable {
          if (place.isEmpty()) {
             errorLabel.setVisible(true);
             forecastView.setErrorLabel("Please provide latitude and longitude or place!");
-            return;
-         }
-      }
-
-      // Check if the input is in the correct range
-      if (!latitude.isEmpty()) {
-         double latitudeValue = Double.parseDouble(latitude);
-         if (latitudeValue < -90 || latitudeValue > 90) {
-            errorLabel.setVisible(true);
-            forecastView.setErrorLabel("Latitude must be between -90 and 90!");
-            return;
-         }
-      }
-
-      if (!longitude.isEmpty()) {
-         double longitudeValue = Double.parseDouble(longitude);
-         if (longitudeValue < -180 || longitudeValue > 180) {
-            errorLabel.setVisible(true);
-            forecastView.setErrorLabel("Longitude must be between -180 and 180!");
             return;
          }
       }
