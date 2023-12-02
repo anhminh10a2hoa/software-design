@@ -51,6 +51,15 @@
                      </HBox.margin></Label>
                   <ComboBox fx:id="days16SelectionComboBox" prefWidth="150.0" />
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label style="-fx-font-weight: bold;" text="1 Year Selection:" />
+                  <ComboBox fx:id="yearlySelectionComboBox" prefWidth="150.0" />
+               </children>
             </HBox>
          </children>
       </VBox>
@@ -69,7 +78,7 @@
       <Label fx:id="errorLabel" style="-fx-text-fill: #E97777" />
       <HBox alignment="CENTER" prefHeight="383.0" prefWidth="257.0">
          <children>
-            <TabPane fx:id="forecastTabPane" prefHeight="356.0" prefWidth="1143.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="forecastTabPane" prefHeight="356.0" prefWidth="614.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab text="Daily">
                      <content>

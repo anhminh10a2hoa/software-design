@@ -37,6 +37,8 @@ public class ForecastController implements Initializable {
    @FXML
    private ComboBox<String> days16SelectionComboBox;
    @FXML
+   private ComboBox<String> yearlySelectionComboBox;
+   @FXML
    private Label errorLabel;
    @FXML
    ImageView titleImage;
@@ -82,9 +84,13 @@ public class ForecastController implements Initializable {
       // Initialize the Image
       Image forecastIconImage = new Image("https://cdn0.iconfinder.com/data/icons/ikonate/48/line-chart-512.png");
       titleImage.setImage(forecastIconImage);
+
+      // Initialize the error label
       errorLabel.setVisible(false);
       forecastTabPane.setVisible(false);
 
+      // Disable the latitude and longitude input fields if the other one is filled
+      // and in the reverse direction
       latitudeInput.textProperty().addListener((observable, oldValue, newValue) -> {
          if (!newValue.isEmpty()) {
             placeInput.setDisable(true);
@@ -94,6 +100,7 @@ public class ForecastController implements Initializable {
             }
          }
       });
+
       longitudeInput.textProperty().addListener((observable, oldValue, newValue) -> {
          if (!newValue.isEmpty()) {
             placeInput.setDisable(true);
@@ -112,29 +119,27 @@ public class ForecastController implements Initializable {
             longitudeInput.setDisable(false);
          }
       });
-      // Add the items to the combo box for daily selection
-      // public ForecastHourlyModel(int cityId, String cityName, double longitude,
-      // double latitude, String country, int population, int timezone, int sunrise,
-      // int sunset, int dt, double temperature, double feelsLike, double tempMin,
-      // double tempMax, double pressure, double seaLevel, double groundLevel, double
-      // humidity, double tempKf, int weatherId, String weatherMain, String
-      // weatherDescription, String weatherIcon, double cloudsAll, double windSpeed,
-      // double windDeg, double windGust, double visibility, double pop, double
-      // rain1h, String sysPod, String dtTxt) 
+
       dailySelectionComboBox.setItems(FXCollections.observableArrayList("Temperature", "Feels like", "Temp min",
             "Temp max", "Pressure", "Sea level", "Ground level", "Humidity", "Temp kf", "Weather ID", "Weather main",
             "Weather description", "Weather icon", "Clouds all", "Wind speed", "Wind degree", "Wind gust", "Visibility",
             "Pop", "Rain 1h", "Sys pod"));
+
+      days16SelectionComboBox
+            .setItems(FXCollections.observableArrayList("Temperature day", "Temperature night", "Temperature evening",
+                  "Temperature morning", "Feels like day", "Feels like night", "Feels like evening",
+                  "Feels like morning", "Pressure", "Humidity", "Wind speed",
+                  "Wind degree", "Cloudiness", "Rain", "Sunrise", "Sunset"));
+
+      yearlySelectionComboBox.setItems(FXCollections.observableArrayList("Record min temp", "Record max temp",
+            "Average min temp", "Average max temp", "Median temp", "Mean temp", "P25 temp", "P75 temp", "St dev temp",
+            "Num temp", "Min pressure", "Max pressure", "Median pressure", "Mean pressure", "P25 pressure",
+            "P75 pressure", "St dev pressure", "Num pressure", "Min humidity", "Max humidity", "Median humidity",
+            "Mean humidity", "P25 humidity", "P75 humidity", "St dev humidity", "Num humidity", "Min wind", "Max wind",
+            "Median wind", "Mean wind", "P25 wind", "P75 wind", "St dev wind", "Num wind", "Min clouds", "Max clouds",
+            "Median clouds", "Mean clouds", "P25 clouds", "P75 clouds", "St dev clouds", "Num clouds"));
       
-      // Add the items to the combo box for 16 days selection
-      // public Forecast16DaysModel(String cityName, String longtitude, String latitude, String countryCode,
-      //       int population, int timezone, int timeStamp, double temperatureDay, double temperatureNight,
-      //       double temperatureEvening, double temperatureMorning, double feelsLikeDay, double feelsLikeNight,
-      //       double feelsLikeEvening, double feelsLikeMorning, double pressure, double humidity, double windSpeed,
-      //       double windDegree, double cloudiness, double rain, int sunrise, int sunset) {
-      days16SelectionComboBox.setItems(FXCollections.observableArrayList("Temperature day", "Temperature night", "Temperature evening",
-            "Temperature morning", "Feels like day", "Feels like night", "Feels like evening", "Feels like morning", "Pressure", "Humidity", "Wind speed",
-            "Wind degree", "Cloudiness", "Rain", "Sunrise", "Sunset"));
+         
    }
 
    // Function for loading HTML data from the given URL
@@ -339,6 +344,7 @@ public class ForecastController implements Initializable {
    private List<GeoCodingModel> fetchGeoCodingData(HttpResponse<String> geoCodingRequest) {
       String responseBody = geoCodingRequest.body();
       JSONArray json = new JSONArray(responseBody);
+
       // Based on the comment above, extract cityName, country, latitude, longitude
       for (int i = 0; i < json.length(); i++) {
          JSONObject dataToJson = json.getJSONObject(i);
