@@ -24,9 +24,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import fi.tuni.function.APIAirPollutionData;
 
 public class AirPollutionController implements Initializable {
@@ -54,7 +51,6 @@ public class AirPollutionController implements Initializable {
     private ComboBox<String> airPollutionComboBox;
 
     private List<AirPollutionModel> airPollutionData = new ArrayList<AirPollutionModel>();
-    private AirPollutionModel model;
     private AirPollutionView view;
     /**
      *
@@ -82,11 +78,23 @@ public class AirPollutionController implements Initializable {
         String longitude = view.getLongitudeInput();
         
         if (latitude.isEmpty() || longitude.isEmpty()) {
+            errorLabel.setVisible(true);
             view.setErrorLabel("Please provide latitude and longitude!");
+            return;
         } else {
+            errorLabel.setVisible(false);
             try {
                 double latitudeValue = Double.parseDouble(latitude);
                 double longitudeValue = Double.parseDouble(longitude);
+                if(latitudeValue < -90 || latitudeValue > 90) {
+                    errorLabel.setVisible(true);
+                    view.setErrorLabel("Latitude must be between -90 and 90!");
+                    return;
+                } else if(longitudeValue < -180 || longitudeValue > 180) {
+                    errorLabel.setVisible(true);
+                    view.setErrorLabel("Longitude must be between -180 and 180!");
+                    return;
+                } 
                 String apiKey = "cda257269cd8f052e74dc19afdd5252c"; // Replace with your OpenWeatherMap API key
 
                 HttpRequest request = HttpRequest.newBuilder()
@@ -105,6 +113,7 @@ public class AirPollutionController implements Initializable {
                     this.view.setErrorLabel("Can not fetch air pollution!");
                 }
             } catch (NumberFormatException e) {
+                errorLabel.setVisible(true);
                 this.view.setErrorLabel("Latitude and longitude must be a number!");
             }
         }

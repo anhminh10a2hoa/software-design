@@ -1,7 +1,6 @@
 package fi.tuni.forecast;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,10 +8,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -610,7 +605,7 @@ public class ForecastController implements Initializable {
          String geoCodingURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + place
                + "&limit=1&appid=cda257269cd8f052e74dc19afdd5252c";
          HttpRequest geoCodingRequest = Function.createHttpRequest(geoCodingURL);
-         try {
+         try { 
             errorLabel.setVisible(false);
             HttpResponse<String> geoCodingResponse = HttpClient.newHttpClient().send(geoCodingRequest,
                   HttpResponse.BodyHandlers.ofString());
@@ -621,14 +616,24 @@ public class ForecastController implements Initializable {
             latitudeInput.setText(latitude);
             longitudeInput.setText(longitude);
          } catch (IOException | InterruptedException e) {
+            System.out.println("Can not fetch weather!");
+            errorLabel.setVisible(true);
             errorLabel.setText("Can not fetch weather!");
          }
       }
 
       try {
-         double latitudeValue = Double.parseDouble(latitude);
-         double longitudeValue = Double.parseDouble(longitude);
-
+        double latitudeValue = Double.parseDouble(latitude);
+        double longitudeValue = Double.parseDouble(longitude);
+        if(latitudeValue < -90 || latitudeValue > 90) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Latitude must be between -90 and 90!");
+            return;
+        } else if(longitudeValue < -180 || longitudeValue > 180) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Longitude must be between -180 and 180!");
+            return;
+        } 
          // Print the latitude and longitude for debugging purposes
          System.out.println("Latitude: " + latitudeValue);
          System.out.println("Longitude: " + longitudeValue);
